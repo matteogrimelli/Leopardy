@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioca a Leopardy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+        height: 100%;
+        margin: 0;
+        background: linear-gradient(to bottom, #393955, #4A4967);
+        }
+        .board { 
+            display: table; 
+            margin-top: 20px; 
+        }
+        .board th, .board td {
+            border: 1px solid black;
+            padding: 15px;
+            text-align: center;
+            width: 150px;
+        }
+        .board td button {
+            width: 100%;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    </head>
+    <body class="text-white text-center">
+    <div class="container">
+        <h1 class="display-3">Gioca a Leopardy</h1>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-warning" onclick="goHome()">Torna alla home</button>
+            <div>
+                <input type="file" id="upload-file" class="form-control w-auto" accept=".json">
+            </div>
+        </div>
+
+        <div id="game-board" class="board hidden">
+            <!-- Tabellone generato dinamicamente -->
+        </div>
+    </div>
+
+<script>
+    const uploadFileInput = document.getElementById('upload-file');
+    const gameBoard = document.getElementById('game-board');
+
+    // Funzione per tornare alla home
+    function goHome() {
+        if (confirm("Le modifiche non salvate verranno perse. Sei sicuro di voler tornare alla home?")) {
+            window.location.href = "index.html"; // Reindirizza alla home
+        }
+    }
+
+    // Funzione per caricare il file JSON
+    uploadFileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/json') {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    createBoard(data);
+                } catch (error) {
+                    alert("Errore nel parsing del file JSON.");
+                }
+            };
+            reader.readAsText(file);
+        } else {
+            alert("Per favore, carica un file JSON valido.");
+        }
+    });
+
+    // Funzione per creare il tabellone dal file JSON
+    function createBoard(data) {
+        gameBoard.innerHTML = ''; // Resetta il tabellone
+        gameBoard.classList.remove('hidden');
+
+        // Crea l'intestazione della tabella (categorie)
+        const tableHeader = document.createElement('tr');
+        const emptyHeader = document.createElement('th');
+        emptyHeader.innerText = ''; // Prima cella vuota
+        tableHeader.appendChild(emptyHeader);
+
+        // Crea le celle per le categorie
+        data.categories.forEach((category) => {
+            const th = document.createElement('th');
+            th.innerText = category;
+            tableHeader.appendChild(th);
+        });
+        gameBoard.appendChild(tableHeader);
+
+        // Crea il corpo della tabella (domande)
+        data.questions.forEach((row, rowIndex) => {
+            const tableRow = document.createElement('tr');
+            const pointsCell = document.createElement('td');
+            pointsCell.innerText = `Punti ${rowIndex * 100 + 100}`; // Punti in base alla riga
+            tableRow.appendChild(pointsCell);
+
+            row.forEach((question) => {
+                const cell = document.createElement('td');
+                const button = document.createElement('button');
+                button.classList.add('btn', 'btn-primary');
+                button.innerText = question.question || 'Nessuna domanda';
+                button.addEventListener('click', () => showAnswer(question));
+                cell.appendChild(button);
+                tableRow.appendChild(cell);
+            });
+
+            gameBoard.appendChild(tableRow);
+        });
+    }
+
+    // Funzione per mostrare la risposta quando si clicca sulla domanda
+    function showAnswer(question) {
+        alert(`Risposta: ${question.answer}`);
+    }
+</script>
+
+</body>
+</html>

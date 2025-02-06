@@ -54,9 +54,9 @@
 </head>
 <body class="text-white text-center">
   <div class="container mt-5">
+    <a href="index.html" id="backToHomeButton" class="btn btn-warning">Torna alla Home</a>
     <h1 class="display-3">Crea il tuo Tabellone</h1>
     <div class="mb-4">
-      <label for="boardName" class="form-label fw-bold">Nome del Tabellone</label>
       <input type="text" class="form-control" id="boardName" placeholder="Inserisci il nome del tabellone">
     </div>
     <div class="card bg-light text-dark mt-4 p-4 shadow-lg rounded">
@@ -194,129 +194,214 @@
 
     // Funzione per associare l'evento di apertura del modal ai bottoni delle domande
     function attachQuestionEvent(button) {
-      button.addEventListener('click', (event) => {
-        // Se il bottone dei punti viene cliccato, non aprire il modal
+        button.addEventListener('click', (event) => {
         if (button.classList.contains('btn-points')) return;
         currentQuestionButton = button;
 
         // Recupera la cella e l'indice di colonna
         const cell = button.parentElement;
-        const cellIndex = cell.cellIndex; // Indice della cella nella riga
+        const cellIndex = cell.cellIndex;
         const row = cell.parentElement;
-        // Ottieni il nome della categoria dalla riga header (la prima cella è vuota)
+
+        // Ottieni il nome della categoria dalla riga header
         const categoryName = boardTHead.children[cellIndex].textContent.trim();
-        // Recupera il punteggio dal bottone nella prima cella della riga
         const points = row.cells[0].querySelector('button').textContent.trim();
 
-        // Aggiorna il titolo del modal con categoria e punteggio
+        // Aggiorna il titolo del modal
         document.getElementById('modalTitle').textContent = `Domanda - ${categoryName} - ${points}`;
 
-        // Pulisce il contenuto degli editor
-        quillQuestion.setContents([]);
-        quillAnswer.setContents([]);
+        // Recupera i dati della domanda e della risposta salvati precedentemente
+        const savedQuestion = button.getAttribute('data-question') || '';
+        const savedAnswer = button.getAttribute('data-answer') || '';
+
+        // Carica i dati salvati negli editor
+        quillQuestion.root.innerHTML = savedQuestion;
+        quillAnswer.root.innerHTML = savedAnswer;
+
+        // Mostra il modal
         questionModal.show();
-      });
+    });
     }
-
-    // Associa l'evento a tutti i bottoni già presenti
-    document.querySelectorAll('.btn-question').forEach(attachQuestionEvent);
-
-    // Aggiungi una nuova colonna (nuova categoria)
-    addColumnBtn.addEventListener('click', () => {
-      const newColIndex = boardTHead.children.length; // La prima cella è vuota
-      const newHeaderCell = document.createElement('th');
-      newHeaderCell.contentEditable = true;
-      newHeaderCell.innerText = 'Categoria ' + newColIndex;
-      boardTHead.appendChild(newHeaderCell);
-
-      // Per ogni riga del tbody, aggiungi una nuova cella con il bottone per la domanda (vuoto)
-      Array.from(boardTBody.rows).forEach((row) => {
-        const newCell = row.insertCell(-1);
-        newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
-        attachQuestionEvent(newCell.querySelector('button'));
-      });
-    });
-
-    // Aggiungi una nuova riga (nuovo punteggio)
-    addRowBtn.addEventListener('click', () => {
-      const row = boardTBody.insertRow();
-      const pointsCell = row.insertCell();
-      const pointsButton = document.createElement('button');
-      pointsButton.classList.add('btn', 'btn-info', 'btn-points');
-      pointsButton.contentEditable = true;
-      pointsButton.innerText = `Punti ${boardTBody.rows.length * 100}`; // Punti 100, 200, 300...
-      pointsCell.appendChild(pointsButton);
-
-      // Aggiungi una cella per ogni colonna
-      Array.from(boardTHead.children).slice(1).forEach(() => {
-        const newCell = row.insertCell();
-        newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
-        attachQuestionEvent(newCell.querySelector('button'));
-      });
-    });
 
     // Funzione per aprire la finestra modale con il contenuto della domanda e risposta
     function openQuestionModal(button) {
-      // Ottieni i contenuti salvati dal bottone (contenuti preesistenti)
-      const questionContent = button.getAttribute('data-question') || '';
-      const answerContent = button.getAttribute('data-answer') || '';
+    // Ottieni i contenuti salvati dal bottone (contenuti preesistenti)
+    const questionContent = button.getAttribute('data-question') || '';
+    const answerContent = button.getAttribute('data-answer') || '';
     
-      // Setta il titolo del modal con la categoria e il punteggio
-      const category = button.closest('td').dataset.category; // Supponendo che tu abbia aggiunto questo dato
-      const points = button.closest('td').dataset.points; // Punti per la cella
-      
-      // Mostra il modal con la domanda e risposta caricata
-      quillQuestion.setText(questionContent);
-      quillAnswer.setText(answerContent);
-      
-      // Mostra il modal
-      questionModal.show();
+    // Setta il titolo del modal con la categoria e il punteggio
+    const category = button.closest('td').dataset.category; // Supponiamo che la categoria sia nel data-category dell'elemento
+    const points = button.closest('tr').querySelector('td').innerText; // Supponiamo che i punti siano nella cella della riga
+    const modalTitle = document.getElementById('modalTitle');
+    modalTitle.innerHTML = `Categoria: ${category} - Punti: ${points}`;
+    
+    // Carica i contenuti salvati nei rispettivi editor di Quill
+    quillQuestion.root.innerHTML = questionContent;
+    quillAnswer.root.innerHTML = answerContent;
+
+    // Apre il modal
+    questionModal.show();
     }
-    
+
+    // Aggiungi l'evento per ogni bottone per aprire il modal
+    Array.from(document.querySelectorAll('.btn-question')).forEach(button => {
+    button.addEventListener('click', () => openQuestionModal(button));
+    });
+
+    // Salvataggio della domanda e risposta
     saveQuestionBtn.addEventListener('click', () => {
-      const questionText = quillQuestion.getText();
-      const answerText = quillAnswer.getText();
+    const questionContent = quillQuestion.root.innerHTML;
+    const answerContent = quillAnswer.root.innerHTML;
+
+    // Se sia la domanda che la risposta sono vuote, non fare nulla
+    if (!questionContent && !answerContent) return;
+
+    // Aggiorna il bottone con il testo appropriato
+    const buttonText = questionContent && answerContent
+        ? 'Domanda e Risposta'
+        : questionContent
+        ? 'Solo Domanda'
+        : 'Solo Risposta';
+
+    // Salva i contenuti nel bottone
+    currentQuestionButton.setAttribute('data-question', questionContent);
+    currentQuestionButton.setAttribute('data-answer', answerContent);
     
-      if (currentQuestionButton) {
-        currentQuestionButton.setAttribute('data-question', questionText);
-        currentQuestionButton.setAttribute('data-answer', answerText);
-      }
-    
-      questionModal.hide();
+    // Aggiorna il testo del bottone con il nuovo stato
+    currentQuestionButton.textContent = buttonText;
+
+    // Chiudi il modal
+    questionModal.hide();
+    });
+
+    // Massimo numero di righe e colonne
+    const maxRows = 5;
+    const maxColumns = 5;
+
+    // Funzione per aggiungere una colonna (categoria)
+    addColumnBtn.addEventListener('click', () => {
+    const currentColumns = boardTHead.children.length - 1; // Sottrai 1 per la prima cella vuota
+    if (currentColumns >= maxColumns) {
+        alert('Non puoi aggiungere più di 5 colonne!');
+        return;
+    }
+
+    const newColIndex = currentColumns + 1;
+    const newHeaderCell = document.createElement('th');
+    newHeaderCell.contentEditable = true;
+    newHeaderCell.innerText = 'Categoria ' + newColIndex;
+    boardTHead.appendChild(newHeaderCell);
+
+    // Aggiungi una cella per ogni riga nel tbody
+    Array.from(boardTBody.rows).forEach((row) => {
+            const newCell = row.insertCell(-1);
+            newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
+            attachQuestionEvent(newCell.querySelector('button'));
+        });
+    });
+
+    // Funzione per aggiungere una riga (punti)
+    addRowBtn.addEventListener('click', () => {
+        const currentRows = boardTBody.rows.length;
+        if (currentRows >= maxRows) {
+            alert('Non puoi aggiungere più di 5 righe!');
+            return;
+        }
+
+        const row = boardTBody.insertRow();
+        const pointsCell = row.insertCell();
+        const pointsButton = document.createElement('button');
+        pointsButton.classList.add('btn', 'btn-info', 'btn-points');
+        pointsButton.contentEditable = true;
+        pointsButton.innerText = `Punti ${boardTBody.rows.length * 100}`; // Punti 100, 200, 300...
+        pointsCell.appendChild(pointsButton);
+
+        // Aggiungi una cella per ogni colonna
+        Array.from(boardTHead.children).slice(1).forEach(() => {
+            const newCell = row.insertCell();
+            newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
+            attachQuestionEvent(newCell.querySelector('button'));
+        });
     });
 
     // Funzione per salvare il tabellone come file JSON
     const saveBoardAsJSON = () => {
-      const boardName = document.getElementById('boardName').value || 'Tabellone Senza Nome';
-      const table = document.getElementById('board');
-      const headers = Array.from(table.querySelectorAll('thead th'))
+    const boardName = document.getElementById('boardName').value || 'Tabellone Senza Nome';
+    const table = document.getElementById('board');
+    const headers = Array.from(table.querySelectorAll('thead th'))
         .slice(1) // Salta la prima colonna vuota
         .map(header => header.innerText);
-      
-      const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => {
-        return Array.from(row.children)
-          .slice(1) // Salta la prima cella con i punti
-          .map(cell => {
-            const button = cell.querySelector('button');
-            return button ? button.innerText : '';
-          });
-      });
 
-      const board = {
+    const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => {
+        return Array.from(row.children)
+        .slice(1) // Salta la prima cella con i punti
+        .map(cell => {
+            const button = cell.querySelector('button');
+            return button
+            ? {
+                text: button.innerText, // Testo del bottone
+                question: button.getAttribute('data-question') || '', // Testo della domanda
+                answer: button.getAttribute('data-answer') || '' // Testo della risposta
+                }
+            : {};
+        });
+    });
+
+    const board = {
         name: boardName,
         categories: headers,
         rows: rows
-      };
-
-      const boardJSON = JSON.stringify(board, null, 2);
-      const blob = new Blob([boardJSON], { type: 'application/json' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `${boardName}.json`;
-      link.click();
     };
 
+    const boardJSON = JSON.stringify(board, null, 2);
+    const blob = new Blob([boardJSON], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${boardName}.json`;
+    link.click();
+    };
+
+
     document.getElementById('saveBoard').addEventListener('click', saveBoardAsJSON);
+  
+    // Aggiungi un listener per il bottone di ritorno alla home
+    document.getElementById('backToHomeButton').addEventListener('click', function(event) {
+        // Se ci sono modifiche non salvate, chiedi conferma prima di andare alla home
+        if (isBoardModified()) {
+            const isConfirmed = confirm("Le modifiche non salvate andranno perse. Sei sicuro di voler tornare alla home?");
+            if (!isConfirmed) {
+                // Cancella il link se l'utente non conferma
+                event.preventDefault();
+            }
+        }
+    });
+
+    // Funzione per rilevare se il tabellone è stato modificato
+    function isBoardModified() {
+        // Verifica se ci sono modifiche nel tabellone (ad esempio controllando se qualche cella è modificata)
+        // Puoi implementare un controllo in base a come vengono gestiti i dati (modifiche alle celle, ai titoli, etc.)
+        const modifiedCells = document.querySelectorAll('[contenteditable="true"]');
+        for (let cell of modifiedCells) {
+            if (cell.innerText.trim() !== "") {
+                return true; // Se ci sono celle modificate
+            }
+        }
+        return false; // Se non ci sono modifiche
+    }
+
+    // Gestione del caso in cui l'utente tenta di lasciare la pagina
+    window.addEventListener('beforeunload', function(event) {
+        if (isBoardModified()) {
+            // Mostra il messaggio di conferma se l'utente cerca di navigare lontano dalla pagina
+            const message = "Le modifiche non salvate andranno perse. Sei sicuro di voler lasciare questa pagina?";
+            event.returnValue = message; // Mostra il popup di conferma
+            return message; // Alcuni browser richiedono di restituire il messaggio
+        }
+    });
+
+    // Associa l'evento a tutti i bottoni già presenti
+    document.querySelectorAll('.btn-question').forEach(attachQuestionEvent);
+
   </script>
 </body>
 </html>
