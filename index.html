@@ -1,7 +1,31 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leopardy - Homepage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Aggiungi sfumatura su tutta la pagina */
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(to bottom, #393955, #4A4967); /* grigio chiaro a grigio scuro */
+        }
+    </style>
+</head>
+<body class="text-white text-center">
+    <div class="container mt-5">
+        <h1 class="display-3">Leopardy</h1>
+        <div class="card bg-light text-dark mt-4 p-4 shadow-lg rounded">
+            <p class="fs-1">Benvenuto in Leopardy!</p>
+            <p class="fs-5">Il gioco ispirato a Jeopardy che puoi giocare con i tuoi amici.</p>
+            <p class="fs-5">Puoi creare una partita o giocare una già esitente</p>
+            <p class="fs-5">Condividi lo schermo per giocare con i tuoi amici online</p>
+            <a href="crea.html" class="btn btn-warning btn-lg my-2">Crea</a>
+            <a href="gioca.html" class="btn btn-warning btn-lg my-2">Gioca</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

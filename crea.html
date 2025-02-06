@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leopardy - Crea Partita</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Quill Editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to bottom, #393955, #4A4967);
+    }
+    .board-table th,
+    .board-table td {
+      border: 1px solid #ddd;
+      text-align: center;
+      vertical-align: middle;
+    }
+    /* Aumenta la dimensione dei bottoni */
+    .board-table button {
+      width: 100%;
+      min-height: 80px; /* Imposta un'altezza minima maggiore */
+      font-size: 1.2rem;
+    }
+    .board-table th[contenteditable="true"] {
+      outline: none;
+    }
+    /* Imposta l'altezza degli editor */
+    .editor-container {
+      height: 150px;
+    }
+    /* Forza lo sfondo bianco e il testo nero negli editor Quill */
+    .ql-editor {
+      background-color: #fff;
+      color: #000;
+      min-height: 150px;
+    }
+    /* Forza il colore nero per le label nel modal */
+    .modal .form-label {
+      color: #000;
+    }
+    /* Stili personalizzati per il modal */
+    .modal-content {
+      background-color: #607D8B; /* Blu-grigio */
+    }
+    .modal-title {
+      color: #000 !important;
+    }
+  </style>
+</head>
+<body class="text-white text-center">
+  <div class="container mt-5">
+    <h1 class="display-3">Crea il tuo Tabellone</h1>
+    <div class="mb-4">
+      <label for="boardName" class="form-label fw-bold">Nome del Tabellone</label>
+      <input type="text" class="form-control" id="boardName" placeholder="Inserisci il nome del tabellone">
+    </div>
+    <div class="card bg-light text-dark mt-4 p-4 shadow-lg rounded">
+      <div class="mb-3">
+        <button class="btn btn-success me-2" id="addColumn">Aggiungi Colonna</button>
+        <button class="btn btn-success" id="addRow">Aggiungi Riga</button>
+      </div>
+      <!-- Tabellone iniziale 2x2: l'header ha due categorie e il corpo due righe -->
+      <table class="table table-bordered board-table" id="board">
+        <thead>
+          <tr>
+            <th style="width: 150px;"></th>
+            <th contenteditable="true">Categoria 1</th>
+            <th contenteditable="true">Categoria 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <button class="btn btn-info btn-points" contenteditable="true">Punti 100</button>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-question"></button>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-question"></button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button class="btn btn-info btn-points" contenteditable="true">Punti 200</button>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-question"></button>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-question"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-warning mt-3" id="saveBoard">Salva Tabellone</button>
+    </div>
+  </div>
+
+  <!-- Modal per la creazione di domande/risposte -->
+  <div class="modal" tabindex="-1" id="questionModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Il titolo verrà aggiornato dinamicamente per mostrare Categoria e Punti -->
+          <h5 id="modalTitle" class="modal-title">Crea Domanda</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Sezione per la domanda -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Testo della Domanda</label>
+            <!-- Toolbar per l'editor della domanda -->
+            <div id="toolbar-question">
+              <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+              </span>
+              <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-image"></button>
+              </span>
+            </div>
+            <div id="questionEditor" class="editor-container"></div>
+          </div>
+          <!-- Sezione per la risposta -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Testo della Risposta</label>
+            <!-- Toolbar per l'editor della risposta -->
+            <div id="toolbar-answer">
+              <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+              </span>
+              <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+              </span>
+            </div>
+            <div id="answerEditor" class="editor-container"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="button" class="btn btn-primary" id="saveQuestion">Salva Domanda</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Quill Editor JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // Inizializzazione degli editor Quill con placeholder
+    const quillQuestion = new Quill('#questionEditor', {
+      modules: { toolbar: '#toolbar-question' },
+      placeholder: 'Scrivi qui la domanda...',
+      theme: 'snow'
+    });
+    const quillAnswer = new Quill('#answerEditor', {
+      modules: { toolbar: '#toolbar-answer' },
+      placeholder: 'Scrivi qui la risposta...',
+      theme: 'snow'
+    });
+
+    const addColumnBtn = document.getElementById('addColumn');
+    const addRowBtn = document.getElementById('addRow');
+    const boardTable = document.getElementById('board');
+    const boardTHead = boardTable.querySelector('thead tr');
+    const boardTBody = boardTable.querySelector('tbody');
+    const questionModal = new bootstrap.Modal(document.getElementById('questionModal'));
+    const saveQuestionBtn = document.getElementById('saveQuestion');
+    let currentQuestionButton = null; // Bottone della cella attualmente cliccata
+
+    // Funzione per associare l'evento di apertura del modal ai bottoni delle domande
+    function attachQuestionEvent(button) {
+      button.addEventListener('click', (event) => {
+        // Se il bottone dei punti viene cliccato, non aprire il modal
+        if (button.classList.contains('btn-points')) return;
+        currentQuestionButton = button;
+
+        // Recupera la cella e l'indice di colonna
+        const cell = button.parentElement;
+        const cellIndex = cell.cellIndex; // Indice della cella nella riga
+        const row = cell.parentElement;
+        // Ottieni il nome della categoria dalla riga header (la prima cella è vuota)
+        const categoryName = boardTHead.children[cellIndex].textContent.trim();
+        // Recupera il punteggio dal bottone nella prima cella della riga
+        const points = row.cells[0].querySelector('button').textContent.trim();
+
+        // Aggiorna il titolo del modal con categoria e punteggio
+        document.getElementById('modalTitle').textContent = `Domanda - ${categoryName} - ${points}`;
+
+        // Pulisce il contenuto degli editor
+        quillQuestion.setContents([]);
+        quillAnswer.setContents([]);
+        questionModal.show();
+      });
+    }
+
+    // Associa l'evento a tutti i bottoni già presenti
+    document.querySelectorAll('.btn-question').forEach(attachQuestionEvent);
+
+    // Aggiungi una nuova colonna (nuova categoria)
+    addColumnBtn.addEventListener('click', () => {
+      const newColIndex = boardTHead.children.length; // La prima cella è vuota
+      const newHeaderCell = document.createElement('th');
+      newHeaderCell.contentEditable = true;
+      newHeaderCell.innerText = 'Categoria ' + newColIndex;
+      boardTHead.appendChild(newHeaderCell);
+
+      // Per ogni riga del tbody, aggiungi una nuova cella con il bottone per la domanda (vuoto)
+      Array.from(boardTBody.rows).forEach((row) => {
+        const newCell = row.insertCell(-1);
+        newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
+        attachQuestionEvent(newCell.querySelector('button'));
+      });
+    });
+
+    // Aggiungi una nuova riga (nuovo punteggio)
+    addRowBtn.addEventListener('click', () => {
+      const row = boardTBody.insertRow();
+      const pointsCell = row.insertCell();
+      const pointsButton = document.createElement('button');
+      pointsButton.classList.add('btn', 'btn-info', 'btn-points');
+      pointsButton.contentEditable = true;
+      pointsButton.innerText = `Punti ${boardTBody.rows.length * 100}`; // Punti 100, 200, 300...
+      pointsCell.appendChild(pointsButton);
+
+      // Aggiungi una cella per ogni colonna
+      Array.from(boardTHead.children).slice(1).forEach(() => {
+        const newCell = row.insertCell();
+        newCell.innerHTML = `<button class="btn btn-primary btn-question"></button>`;
+        attachQuestionEvent(newCell.querySelector('button'));
+      });
+    });
+
+    // Funzione per aprire la finestra modale con il contenuto della domanda e risposta
+    function openQuestionModal(button) {
+      // Ottieni i contenuti salvati dal bottone (contenuti preesistenti)
+      const questionContent = button.getAttribute('data-question') || '';
+      const answerContent = button.getAttribute('data-answer') || '';
+    
+      // Setta il titolo del modal con la categoria e il punteggio
+      const category = button.closest('td').dataset.category; // Supponendo che tu abbia aggiunto questo dato
+      const points = button.closest('td').dataset.points; // Punti per la cella
+      
+      // Mostra il modal con la domanda e risposta caricata
+      quillQuestion.setText(questionContent);
+      quillAnswer.setText(answerContent);
+      
+      // Mostra il modal
+      questionModal.show();
+    }
+    
+    saveQuestionBtn.addEventListener('click', () => {
+      const questionText = quillQuestion.getText();
+      const answerText = quillAnswer.getText();
+    
+      if (currentQuestionButton) {
+        currentQuestionButton.setAttribute('data-question', questionText);
+        currentQuestionButton.setAttribute('data-answer', answerText);
+      }
+    
+      questionModal.hide();
+    });
+
+    // Funzione per salvare il tabellone come file JSON
+    const saveBoardAsJSON = () => {
+      const boardName = document.getElementById('boardName').value || 'Tabellone Senza Nome';
+      const table = document.getElementById('board');
+      const headers = Array.from(table.querySelectorAll('thead th'))
+        .slice(1) // Salta la prima colonna vuota
+        .map(header => header.innerText);
+      
+      const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => {
+        return Array.from(row.children)
+          .slice(1) // Salta la prima cella con i punti
+          .map(cell => {
+            const button = cell.querySelector('button');
+            return button ? button.innerText : '';
+          });
+      });
+
+      const board = {
+        name: boardName,
+        categories: headers,
+        rows: rows
+      };
+
+      const boardJSON = JSON.stringify(board, null, 2);
+      const blob = new Blob([boardJSON], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${boardName}.json`;
+      link.click();
+    };
+
+    document.getElementById('saveBoard').addEventListener('click', saveBoardAsJSON);
+  </script>
+</body>
+</html>
