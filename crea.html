@@ -315,49 +315,71 @@
     });
     /////////////////////////
     // Funzione per salvare il tabellone come file JSON
+    /*
+    const saveBoardAsJSON = () => {
+    const boardName = document.getElementById('boardName').value || 'Tabellone Senza Nome';
+    const table = document.getElementById('board');
+    const headers = Array.from(table.querySelectorAll('thead th'))
+        .slice(1) // Salta la prima colonna vuota
+        .map(header => header.innerText);
+    const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => {
+        return Array.from(row.children)
+        .slice(1) // Salta la prima cella con i punti
+        .map(cell => {
+            const button = cell.querySelector('button');
+            return button
+            ? {
+                text: button.innerText, // Testo del bottone
+                question: button.getAttribute('data-question') || '', // Testo della domanda
+                answer: button.getAttribute('data-answer') || '' // Testo della risposta
+                }
+            : {};
+        });
+    });
+    const board = {
+        name: boardName,
+        categories: headers,
+        rows: rows
+    };
+    const boardJSON = JSON.stringify(board, null, 2);
+    const blob = new Blob([boardJSON], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${boardName}.json`;
+    link.click();
+    };
+    */
     function salvaTabellone() {
-      let tabellone = {
-          name: document.getElementById("nomeTabellone").value, // Nome del tabellone
-          categories: [], // Array delle categorie
-          rows: [] // Array delle righe con domande e punteggio
-      };
-      // Ottieni le categorie
-      document.querySelectorAll(".categoria").forEach(cat => {
-          tabellone.categories.push(cat.value);
-      });
-      // Ottieni le domande e risposte
-      document.querySelectorAll(".riga").forEach((riga, rigaIndex) => {
-          let punti = parseInt(riga.getAttribute("data-punti")) || (rigaIndex + 1) * 100; // Punti della riga
-          let domande = [];
-          riga.querySelectorAll(".domanda").forEach(domandaElem => {
-              let domanda = {
-                  text: "Domanda e Risposta",
-                  question: domandaElem.querySelector(".testo-domanda").innerHTML,
-                  answer: domandaElem.querySelector(".testo-risposta").innerHTML
-              };
-              // Controllo se c'è un'immagine e la converto in Base64
-              let imgInput = domandaElem.querySelector(".immagine-input");
-              if (imgInput && imgInput.files.length > 0) {
-                  let file = imgInput.files[0];
-                  let reader = new FileReader();
-                  reader.onloadend = function () {
-                      domanda.image = reader.result; // Salva l'immagine in Base64 nel JSON
-                      if (rigaIndex === tabellone.rows.length) {
-                          scaricaJSON(tabellone); // Scarica JSON una volta completata la conversione
-                      }
+      const boardName = document.getElementById("boardName").value || "Tabellone";
+      const categories = Array.from(document.querySelectorAll("#board thead th"))
+          .slice(1) // Escludi la prima cella vuota
+          .map(th => th.innerText.trim());
+      const rows = Array.from(document.querySelectorAll("#board tbody tr")).map(tr => {
+          const points = tr.cells[0].innerText.trim();
+          const questions = Array.from(tr.cells)
+              .slice(1) // Escludi la colonna dei punti
+              .map(td => {
+                  const button = td.querySelector("button");
+                  return {
+                      text: button.textContent || "",
+                      question: button.getAttribute("data-question") || "",
+                      answer: button.getAttribute("data-answer") || ""
                   };
-                  reader.readAsDataURL(file);
-              }
-              domande.push(domanda);
-          });
-          tabellone.rows.push({
-              points: punti,
-              questions: domande
-          });
+              });
+          return { points, questions };
       });
-      scaricaJSON(tabellone); // Scarica il file JSON
-    }
-    /////////////////////////
+      const boardData = {
+          name: boardName,
+          categories,
+          rows
+      };
+      const blob = new Blob([JSON.stringify(boardData, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = boardName.replace(/\s+/g, "_") + ".json";
+      link.click();
+    }  
+
     // Funzione per scaricare il JSON
     function scaricaJSON(tabellone) {
         let jsonBlob = new Blob([JSON.stringify(tabellone, null, 2)], { type: "application/json" });
@@ -367,7 +389,7 @@
         link.click();
     }
     /////////////////////////
-    document.getElementById('saveBoard').addEventListener('click', saveBoardAsJSON);
+    document.getElementById('saveBoard').addEventListener('click', salvaTabellone);
     /////////////////////////
     // Aggiungi un listener per il bottone di ritorno alla home
     document.getElementById('backToHomeButton').addEventListener('click', function(event) {
