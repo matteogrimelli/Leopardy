@@ -5,33 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gioca - Leopardy</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="container text-center">
-    <h1 class="my-4">Gioca a Leopardy</h1>
-    
+<body class="text-white text-center">
+    <a href="index.html" id="backToHomeButton" class="btn btn-warning">Torna alla Home</a>
+    <h1 class="display-3">Gioca a Leopardy</h1>
     <div id="playerSelection">
         <label for="numPlayers">Numero di giocatori:</label>
         <input type="number" id="numPlayers" min="1" max="10" value="2" class="form-control w-25 mx-auto">
         <button class="btn btn-primary mt-2" onclick="setupPlayers()">Conferma</button>
     </div>
-    
     <div id="fileUpload" class="hidden">
         <label for="jsonFile" class="form-label">Carica un file JSON:</label>
         <input type="file" id="jsonFile" class="form-control w-50 mx-auto" accept="application/json">
     </div>
-    
     <table id="board" class="table table-bordered mt-4 hidden"></table>
-    
     <div id="questionBox" class="question-box hidden"></div>
-    
     <div id="scoreboard" class="scoreboard hidden"></div>
-    
     <script>
         let boardData = null;
         let currentPoints = 0;
-        
         function setupPlayers() {
             const numPlayers = document.getElementById("numPlayers").value;
             const scoreboard = document.getElementById("scoreboard");
@@ -50,7 +43,6 @@
             scoreboard.classList.remove("hidden");
             document.getElementById("fileUpload").classList.remove("hidden");
         }
-        
         document.getElementById("jsonFile").addEventListener("change", function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -62,11 +54,9 @@
                 reader.readAsText(file);
             }
         });
-        
         function generateBoard() {
             const board = document.getElementById("board");
-            board.innerHTML = "";
-            
+            board.innerHTML = "";     
             let thead = document.createElement("thead");
             let headRow = document.createElement("tr");
             headRow.innerHTML = "<th></th>";
@@ -77,14 +67,12 @@
             });
             thead.appendChild(headRow);
             board.appendChild(thead);
-            
             let tbody = document.createElement("tbody");
             boardData.rows.forEach((row, rIdx) => {
                 let tr = document.createElement("tr");
                 let tdPoints = document.createElement("td");
                 tdPoints.innerText = row.points;
-                tr.appendChild(tdPoints);
-                
+                tr.appendChild(tdPoints);  
                 row.questions.forEach((q, qIdx) => {
                     let td = document.createElement("td");
                     let btn = document.createElement("button");
@@ -99,15 +87,13 @@
             board.appendChild(tbody);
             board.classList.remove("hidden");
         }
-        
         function showQuestion(questionData, points) {
             currentPoints = parseInt(points);
             const questionBox = document.getElementById("questionBox");
             questionBox.innerHTML = `<p>${questionData.question}</p>`;
             questionBox.classList.remove("hidden");
             questionBox.dataset.answer = questionData.answer;
-        }
-        
+        } 
         document.addEventListener("keydown", function(event) {
             if (event.code === "Space") {
                 const questionBox = document.getElementById("questionBox");
@@ -116,7 +102,6 @@
                 }
             }
         });
-        
         function updateScore(button, playerIndex, points) {
             let scoreElement = button.parentElement.querySelector(".score");
             let currentScore = parseInt(scoreElement.innerText);

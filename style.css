@@ -52,3 +52,27 @@ html, body {
 .player-box { 
     border: 2px solid #000; padding: 10px; text-align: center; min-width: 120px; 
 }
+{
+#music-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(152, 150, 255, 0.7);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#toggle-music:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+#music-frame {
+    width: 0;
+    height: 0;
+    border: none; /* Rimuovi il bordo dell'iframe */
+    visibility: hidden; /* Nascondi visivamente l'iframe */
+    display: none; /* Nascondi l'iframe */
+}
+
