@@ -52,7 +52,6 @@ html, body {
 .player-box { 
     border: 2px solid #000; padding: 10px; text-align: center; min-width: 120px; 
 }
-{
 #music-controls {
     position: fixed;
     top: 10px;
@@ -74,5 +73,40 @@ html, body {
     border: none; /* Rimuovi il bordo dell'iframe */
     visibility: hidden; /* Nascondi visivamente l'iframe */
     display: none; /* Nascondi l'iframe */
+}
+/* Fissa la classifica in basso */
+#scoreboard {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+#scoreboard .player-box {
+    width: 120px;
+}
+.hidden {
+    display: none;
+}
+#questionBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    display: none;
+}
+button.disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
 }
 

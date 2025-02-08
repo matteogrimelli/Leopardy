@@ -10,39 +10,45 @@
 <body class="text-white text-center">
     <a href="index.html" id="backToHomeButton" class="btn btn-warning">Torna alla Home</a>
     <h1 class="display-3">Gioca a Leopardy</h1>
-    <div id="playerSelection">
-        <label for="numPlayers">Numero di giocatori:</label>
-        <input type="number" id="numPlayers" min="1" max="10" value="2" class="form-control w-25 mx-auto">
-        <button class="btn btn-primary mt-2" onclick="setupPlayers()">Conferma</button>
-    </div>
+
     <div id="fileUpload" class="hidden">
         <label for="jsonFile" class="form-label">Carica un file JSON:</label>
         <input type="file" id="jsonFile" class="form-control w-50 mx-auto" accept="application/json">
     </div>
+
     <table id="board" class="table table-bordered mt-4 hidden"></table>
     <div id="questionBox" class="question-box hidden"></div>
-    <div id="scoreboard" class="scoreboard hidden"></div>
+
+    <div id="scoreboard" class="scoreboard hidden">
+        <!-- Giocatori aggiunti dinamicamente -->
+    </div>
+
+    <footer id="footer" class="mt-4">
+        <button id="addPlayerButton" class="btn btn-success" onclick="addPlayer()">Aggiungi Giocatore</button>
+    </footer>
+
     <script>
         let boardData = null;
         let currentPoints = 0;
+
+        // Aggiungi il primo giocatore di default
         function setupPlayers() {
-            const numPlayers = document.getElementById("numPlayers").value;
             const scoreboard = document.getElementById("scoreboard");
             scoreboard.innerHTML = "";
-            for (let i = 0; i < numPlayers; i++) {
-                const playerBox = document.createElement("div");
-                playerBox.className = "player-box";
-                playerBox.innerHTML = `
-                    <input type="text" class="form-control" value="Giocatore ${i + 1}">
-                    <p class="score">0</p>
-                    <button class="btn btn-success" onclick="updateScore(this, ${i}, currentPoints)">+</button>
-                    <button class="btn btn-danger" onclick="updateScore(this, ${i}, -currentPoints)">-</button>
-                `;
-                scoreboard.appendChild(playerBox);
-            }
+
+            const playerBox = document.createElement("div");
+            playerBox.className = "player-box";
+            playerBox.innerHTML = `
+                <input type="text" class="form-control" value="Giocatore 1">
+                <p class="score">0</p>
+                <button class="btn btn-success" onclick="updateScore(this, 0, currentPoints)">+</button>
+                <button class="btn btn-danger" onclick="updateScore(this, 0, -currentPoints)">-</button>
+            `;
+            scoreboard.appendChild(playerBox);
             scoreboard.classList.remove("hidden");
             document.getElementById("fileUpload").classList.remove("hidden");
         }
+
         document.getElementById("jsonFile").addEventListener("change", function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -50,13 +56,15 @@
                 reader.onload = function(e) {
                     boardData = JSON.parse(e.target.result);
                     generateBoard();
+                    document.getElementById("fileUpload").classList.add("hidden"); // Nasconde la label
                 };
                 reader.readAsText(file);
             }
         });
+
         function generateBoard() {
             const board = document.getElementById("board");
-            board.innerHTML = "";     
+            board.innerHTML = "";
             let thead = document.createElement("thead");
             let headRow = document.createElement("tr");
             headRow.innerHTML = "<th></th>";
@@ -67,18 +75,20 @@
             });
             thead.appendChild(headRow);
             board.appendChild(thead);
+
             let tbody = document.createElement("tbody");
             boardData.rows.forEach((row, rIdx) => {
                 let tr = document.createElement("tr");
                 let tdPoints = document.createElement("td");
                 tdPoints.innerText = row.points;
-                tr.appendChild(tdPoints);  
+                tr.appendChild(tdPoints);
+
                 row.questions.forEach((q, qIdx) => {
                     let td = document.createElement("td");
                     let btn = document.createElement("button");
                     btn.className = "btn btn-warning";
                     btn.innerText = row.points;
-                    btn.onclick = function() { showQuestion(q, row.points); };
+                    btn.onclick = function() { showQuestion(q); };
                     td.appendChild(btn);
                     tr.appendChild(td);
                 });
@@ -87,13 +97,21 @@
             board.appendChild(tbody);
             board.classList.remove("hidden");
         }
-        function showQuestion(questionData, points) {
-            currentPoints = parseInt(points);
+
+        function showQuestion(questionData) {
+            currentPoints = parseInt(questionData.points);
             const questionBox = document.getElementById("questionBox");
             questionBox.innerHTML = `<p>${questionData.question}</p>`;
+
+            // Gestisce il caso in cui la domanda contiene un'immagine
+            if (questionData.question.includes("<img")) {
+                questionBox.innerHTML += `<hr><p><strong>Risposta:</strong> ${questionData.answer}</p>`;
+            }
+
             questionBox.classList.remove("hidden");
             questionBox.dataset.answer = questionData.answer;
-        } 
+        }
+
         document.addEventListener("keydown", function(event) {
             if (event.code === "Space") {
                 const questionBox = document.getElementById("questionBox");
@@ -102,11 +120,36 @@
                 }
             }
         });
+
         function updateScore(button, playerIndex, points) {
             let scoreElement = button.parentElement.querySelector(".score");
             let currentScore = parseInt(scoreElement.innerText);
             scoreElement.innerText = currentScore + points;
         }
+
+        // Funzione per aggiungere un giocatore
+        function addPlayer() {
+            const scoreboard = document.getElementById("scoreboard");
+            const playerBox = document.createElement("div");
+            playerBox.className = "player-box";
+            playerBox.innerHTML = `
+                <input type="text" class="form-control" value="Giocatore ${scoreboard.children.length + 1}">
+                <p class="score">0</p>
+                <button class="btn btn-success" onclick="updateScore(this, ${scoreboard.children.length}, currentPoints)">+</button>
+                <button class="btn btn-danger" onclick="updateScore(this, ${scoreboard.children.length}, -currentPoints)">-</button>
+            `;
+            scoreboard.appendChild(playerBox);
+        }
+
+        // Funzione per aggiungere un giocatore cliccando sull'ultima box
+        document.getElementById("scoreboard").addEventListener("click", function(event) {
+            if (event.target.classList.contains("player-box")) {
+                addPlayer();
+            }
+        });
+
+        // Inizializzazione
+        setupPlayers();
     </script>
 </body>
 </html>
