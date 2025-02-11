@@ -3,153 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gioca - Leopardy</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Gioca a Leopardy</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="text-white text-center">
-    <a href="index.html" id="backToHomeButton" class="btn btn-warning">Torna alla Home</a>
-    <h1 class="display-3">Gioca a Leopardy</h1>
+<body>
 
-    <div id="fileUpload" class="hidden">
-        <label for="jsonFile" class="form-label">Carica un file JSON:</label>
-        <input type="file" id="jsonFile" class="form-control w-50 mx-auto" accept="application/json">
+    <!-- Scoreboard -->
+    <div id="scoreboard" class="hidden">
+        <div class="player-box">
+            <p>Giocatore 1</p>
+            <div class="score">0</div>
+            <button class="btn-success">+10</button>
+            <button class="btn-danger">-10</button>
+        </div>
+        <div class="player-box">
+            <p>Giocatore 2</p>
+            <div class="score">0</div>
+            <button class="btn-success">+10</button>
+            <button class="btn-danger">-10</button>
+        </div>
     </div>
 
-    <table id="board" class="table table-bordered mt-4 hidden"></table>
-    <div id="questionBox" class="question-box hidden"></div>
+    <!-- Tabellone -->
+    <div id="board"></div>
 
-    <div id="scoreboard" class="scoreboard hidden">
-        <!-- Giocatori aggiunti dinamicamente -->
+    <!-- Modale per la domanda -->
+    <div id="questionBox">
+        <h4>Domanda</h4>
+        <p>Qui apparirà la domanda</p>
+        <button id="showAnswerBtn">Mostra la risposta</button>
+        <p id="answer" class="hidden">Questa è la risposta!</p>
     </div>
 
-    <footer id="footer" class="mt-4">
-        <button id="addPlayerButton" class="btn btn-success" onclick="addPlayer()">Aggiungi Giocatore</button>
-    </footer>
+    <!-- Musica -->
+    <button id="music-controls" onclick="toggleMusic()">Controlla Musica</button>
+    <iframe id="music-frame" src="https://www.youtube.com/embed/YOUR_VIDEO_URL" frameborder="0"></iframe>
 
     <script>
-        let boardData = null;
-        let currentPoints = 0;
+        // Carica il file JSON per il tabellone
+        fetch('board.json')
+            .then(response => response.json())
+            .then(data => {
+                const boardContainer = document.getElementById('board');
+                const categories = data.categories;
+                const questions = data.questions;
 
-        // Aggiungi il primo giocatore di default
-        function setupPlayers() {
-            const scoreboard = document.getElementById("scoreboard");
-            scoreboard.innerHTML = "";
+                // Crea la tabella del tabellone
+                const table = document.createElement('table');
+                table.classList.add('board-table');
 
-            const playerBox = document.createElement("div");
-            playerBox.className = "player-box";
-            playerBox.innerHTML = `
-                <input type="text" class="form-control" value="Giocatore 1">
-                <p class="score">0</p>
-                <button class="btn btn-success" onclick="updateScore(this, 0, currentPoints)">+</button>
-                <button class="btn btn-danger" onclick="updateScore(this, 0, -currentPoints)">-</button>
-            `;
-            scoreboard.appendChild(playerBox);
-            scoreboard.classList.remove("hidden");
-            document.getElementById("fileUpload").classList.remove("hidden");
-        }
-
-        document.getElementById("jsonFile").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    boardData = JSON.parse(e.target.result);
-                    generateBoard();
-                    document.getElementById("fileUpload").classList.add("hidden"); // Nasconde la label
-                };
-                reader.readAsText(file);
-            }
-        });
-
-        function generateBoard() {
-            const board = document.getElementById("board");
-            board.innerHTML = "";
-            let thead = document.createElement("thead");
-            let headRow = document.createElement("tr");
-            headRow.innerHTML = "<th></th>";
-            boardData.categories.forEach(cat => {
-                let th = document.createElement("th");
-                th.innerText = cat;
-                headRow.appendChild(th);
-            });
-            thead.appendChild(headRow);
-            board.appendChild(thead);
-
-            let tbody = document.createElement("tbody");
-            boardData.rows.forEach((row, rIdx) => {
-                let tr = document.createElement("tr");
-                let tdPoints = document.createElement("td");
-                tdPoints.innerText = row.points;
-                tr.appendChild(tdPoints);
-
-                row.questions.forEach((q, qIdx) => {
-                    let td = document.createElement("td");
-                    let btn = document.createElement("button");
-                    btn.className = "btn btn-warning";
-                    btn.innerText = row.points;
-                    btn.onclick = function() { showQuestion(q); };
-                    td.appendChild(btn);
-                    tr.appendChild(td);
+                // Crea l'intestazione della tabella
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                categories.forEach(category => {
+                    const th = document.createElement('th');
+                    th.textContent = category;
+                    headerRow.appendChild(th);
                 });
-                tbody.appendChild(tr);
-            });
-            board.appendChild(tbody);
-            board.classList.remove("hidden");
-        }
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
 
-        function showQuestion(questionData) {
-            currentPoints = parseInt(questionData.points);
-            const questionBox = document.getElementById("questionBox");
-            questionBox.innerHTML = `<p>${questionData.question}</p>`;
-
-            // Gestisce il caso in cui la domanda contiene un'immagine
-            if (questionData.question.includes("<img")) {
-                questionBox.innerHTML += `<hr><p><strong>Risposta:</strong> ${questionData.answer}</p>`;
-            }
-
-            questionBox.classList.remove("hidden");
-            questionBox.dataset.answer = questionData.answer;
-        }
-
-        document.addEventListener("keydown", function(event) {
-            if (event.code === "Space") {
-                const questionBox = document.getElementById("questionBox");
-                if (questionBox.innerHTML.includes("<p>")) {
-                    questionBox.innerHTML += `<hr><p><strong>Risposta:</strong> ${questionBox.dataset.answer}</p>`;
+                // Crea il corpo della tabella
+                const tbody = document.createElement('tbody');
+                for (let i = 0; i < questions.length / categories.length; i++) {
+                    const row = document.createElement('tr');
+                    categories.forEach((category, index) => {
+                        const question = questions.filter(q => q.category === category)[i];
+                        const td = document.createElement('td');
+                        const button = document.createElement('button');
+                        button.classList.add('question');
+                        button.textContent = question ? question.value : 'N/A';
+                        button.dataset.category = category;
+                        button.dataset.value = question ? question.value : 'N/A';
+                        button.dataset.question = question ? question.question : '';
+                        button.dataset.answer = question ? question.answer : '';
+                        td.appendChild(button);
+                        row.appendChild(td);
+                    });
+                    tbody.appendChild(row);
                 }
-            }
+                table.appendChild(tbody);
+                boardContainer.appendChild(table);
+            })
+            .catch(error => console.error('Errore nel caricare il file JSON:', error));
+
+        // Funzione per mostrare la domanda e la risposta
+        const questionButtons = document.querySelectorAll('.question');
+        const questionBox = document.getElementById('questionBox');
+        const showAnswerBtn = document.getElementById('showAnswerBtn');
+        const answer = document.getElementById('answer');
+
+        questionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Mostra la finestra della domanda
+                questionBox.style.display = 'block';
+                questionBox.querySelector('h4').textContent = `${button.dataset.category} - ${button.dataset.value}`;
+                questionBox.querySelector('p').textContent = button.dataset.question;
+
+                // Rivelare la risposta al clic
+                showAnswerBtn.addEventListener('click', () => {
+                    answer.textContent = button.dataset.answer;
+                    answer.classList.remove('hidden');
+                });
+            });
         });
 
-        function updateScore(button, playerIndex, points) {
-            let scoreElement = button.parentElement.querySelector(".score");
-            let currentScore = parseInt(scoreElement.innerText);
-            scoreElement.innerText = currentScore + points;
-        }
-
-        // Funzione per aggiungere un giocatore
-        function addPlayer() {
-            const scoreboard = document.getElementById("scoreboard");
-            const playerBox = document.createElement("div");
-            playerBox.className = "player-box";
-            playerBox.innerHTML = `
-                <input type="text" class="form-control" value="Giocatore ${scoreboard.children.length + 1}">
-                <p class="score">0</p>
-                <button class="btn btn-success" onclick="updateScore(this, ${scoreboard.children.length}, currentPoints)">+</button>
-                <button class="btn btn-danger" onclick="updateScore(this, ${scoreboard.children.length}, -currentPoints)">-</button>
-            `;
-            scoreboard.appendChild(playerBox);
-        }
-
-        // Funzione per aggiungere un giocatore cliccando sull'ultima box
-        document.getElementById("scoreboard").addEventListener("click", function(event) {
-            if (event.target.classList.contains("player-box")) {
-                addPlayer();
+        // Funzione per gestire la musica
+        function toggleMusic() {
+            const musicFrame = document.getElementById('music-frame');
+            if (musicFrame.style.display === 'none') {
+                musicFrame.style.display = 'block';
+            } else {
+                musicFrame.style.display = 'none';
             }
-        });
-
-        // Inizializzazione
-        setupPlayers();
+        }
     </script>
+
 </body>
 </html>
