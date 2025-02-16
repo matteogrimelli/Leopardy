@@ -1,0 +1,53 @@
+/* create.css */
+
+.input-category {
+  background-color: var(--leo-bright-white);
+}
+
+.input-point {
+  background-color: var(--leo-bright-white);
+}
+
+#stubhead-label {
+  background-color: var(--leo-bright-white);
+  color: var(--leo-raisin-black);
+  border: solid 2px var(--leo-raisin-black);
+}
+
+#div-container-create-table {
+  max-width: 90%;
+  max-height: 90%;
+  padding: 20px;
+}
+
+#div-container-create-table .col {
+  border: inset;
+  display: flex;
+  padding: 0;
+}
+
+#div-container-create-table .col * {
+  flex: 1;
+  text-align: center;
+}
+
+#create-div {
+  text-align: center;
+}
+
+#table-title {
+  width: 40%;
+  text-align: center;
+}
+
+#table-title {
+  background-color: var(--leo-bright-white);
+}
+
+#h1-create-table {
+  color: var(--leo-indian-red);
+}
+
+#summernote-question ol {
+}
+

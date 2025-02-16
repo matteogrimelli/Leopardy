@@ -1,0 +1,77 @@
+/* style.css */
+
+:root {
+  --leo-indian-red: #d16571;
+  --leo-steel-pink: #B812B4ff;
+  --leo-sapphire: #2252AEff;
+  --leo-medium-slate-blue: #7F68FCff;
+  --leo-raisin-black: #1e171b;
+  --leo-cold-black: #030408;
+  --leo-emrald-green: #22ae73;
+  --leo-bright-white: #b69fb7;
+}
+
+#header-nav {
+}
+
+.site-section h1 {
+  font-weight: normal;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  font-size: 40px;
+  color: var(--leo-indian-red);
+}
+
+.site-section {
+  text-align: center;
+  padding: 70px;
+}
+
+body {
+  font-family: 'Bitter';
+  background-color: var(--leo-raisin-black);
+}
+
+.container.my-4 {
+}
+
+#navcol-1 .nav-link {
+  margin-right: 4px;
+  margin-left: 4px;
+  padding-top: 4px;
+  padding-bottom: 0px;
+  color: var(--leo-sapphire);
+  font-size: 24px;
+}
+
+#navbar {
+  background-color: var(--leo-cold-black);
+  text-align: center;
+  padding: 0;
+}
+
+#navbar-site {
+  font-size: 48px;
+  color: var(--leo-steel-pink);
+}
+
+.btn.btn-primary {
+  background-color: var(--leo-sapphire);
+  color: var(--leo-bright-white);
+}
+
+.btn.btn-success {
+  background-color: var(--leo-emrald-green);
+  color: var(--leo-cold-black);
+}
+
+.btn.btn-danger {
+  color: var(--leo-cold-black);
+  background-color: var(--leo-steel-pink);
+}
+
+.btn.btn-warning {
+  color: var(--leo-cold-black);
+  background-color: var(--leo-indian-red);
+}
+

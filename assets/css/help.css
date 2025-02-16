@@ -1,0 +1,24 @@
+/* help.css */
+
+.help-page .container {
+  margin-top: 20px;
+  color: var(--leo-bright-white);
+}
+
+.help-page section {
+  margin-bottom: 60px;
+}
+
+.help-page section h2 {
+  text-align: center;
+  border-bottom: 2px solid var(--leo-steel-pink);
+  color: var(--leo-indian-red);
+}
+
+.help-page section h5 {
+  color: var(--leo-medium-slate-blue);
+}
+
+.container.my-4 {
+}
+
