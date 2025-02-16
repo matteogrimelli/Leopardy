@@ -26,4 +26,4 @@ Leopardy is deployed on Vercel. Push updates to GitHub, and Vercel automatically
 
 ---
 
-*For detailed documentation, see the full README file.*
+*No detailed documentation, this project is licensed under the MIT License. No copyright or restrictions.*
