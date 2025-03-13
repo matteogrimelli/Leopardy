@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     answerDiv.classList.add("d-none");
     answerDiv.innerHTML = answer;
     document.getElementById("question-overlay").classList.remove("d-none");
-    document.getElementById("fact-check-btn").classList.remove("d-none");
+    document.getElementById("fact-check-btn").classList.add("d-none");
     document.getElementById("fact-check-result").classList.add("d-none");
     // Se la cella è già stata aperta, cambia il testo in "show again"
     cell.textContent = "show again";
@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("show-answer-btn").addEventListener("click", function() {
     document.getElementById("answer-text").classList.remove("d-none");
 	document.getElementById("hr-question").classList.remove("d-none");
+    document.getElementById("fact-check-btn").classList.remove("d-none");
   });
   document.getElementById("close-overlay-btn").addEventListener("click", function() {
     document.getElementById("question-overlay").classList.add("d-none");
