@@ -6,7 +6,6 @@ export default async function handler(req, res) {
     }
 
     const { question } = req.body;
-
     if (!question) {
         return res.status(400).json({ error: "Question is required" });
     }
@@ -16,19 +15,16 @@ export default async function handler(req, res) {
 
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ 
-                role: "user", 
-                content: `Respond in the same language as the question. Fact-check this statement: "${question}"` 
-            }],
-            max_tokens: 50, // Limit response length to optimize API usage
-            temperature: 0.2, // Reduce randomness for more accurate responses
-            top_p: 0.8 // Prevent overly creative or off-topic answers
-        });        
+            messages: [{ role: "user", content: `Respond in the same language as the question. Fact-check this statement: "${question}"` }],
+            max_tokens: 50
+        });
 
         return res.status(200).json({ factCheck: response.choices[0].message.content });
 
     } catch (error) {
         console.error("Fact-check API error:", error);
-        return res.status(500).json({ error: "Failed to fetch fact-checking data" });
+        
+        // Ensure proper JSON response even on error
+        return res.status(500).json({ error: "Server error while processing request." });
     }
 }
