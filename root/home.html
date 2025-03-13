@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Leopardy</title>
+    <title>Home Leopardy</title>
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png?h=be3f14c69b811cb11fbec5483373d655">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png?h=c66558527b198b2c26c92dbb69692288">
     <link rel="icon" type="image/png" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png?h=03ffb3c2af5af0010c0f960449a24c72">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../assets/css/style.css?h=cfb86bcfe4d0747b573c0c4fe9f00409">
 </head>
 
-<body class="help-page">
+<body id="body-index">
     <header id="header-nav">
         <nav class="navbar navbar-light navbar-expand-md" id="navbar">
             <div class="container-fluid"><a class="navbar-brand" id="navbar-site" href="#">LEOPARDY</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -38,47 +38,36 @@
                 </div>
             </div>
         </nav>
-    </header><div class="container my-4">
-    <section id="site-info">
-      <h2>Site Information</h2>
-      <p>
-        Leopardy is a game inspired by the quiz show "Jeopardy!". The site allows you to create custom game boards,
-        save your questions, and play in multiplayer mode. Additionally, in future, you will be able to perform fact-checking on the questions
-        using embedded ChatGPT.
-      </p>
-    </section>
-    <section id="functionalities">
-      <h2>Functionalities</h2>
-      <ul>
-        <li><strong>Board Creation:</strong> Create a game board with a maximum of 8 rows and 6 columns (the first column is reserved for points and the others for questions in each category).</li>
-        <li><strong>Question Modal:</strong> Each board cell opens a single modal where you can enter the question and answer. If the modal is closed without saving, the inputs are cleared.</li>
-        <li><strong>Board Saving:</strong> The game board is saved as a JSON file, where questions and answers are encoded in Base64.</li>
-        <li><strong>Playing the Game:</strong> Import the JSON board, select the number of players, and play the game. When you click a board cell, a full-screen overlay displays the question. You can reveal the answer and even request a fact-check using ChatGPT.</li>
-        <li><strong>Scoreboard:</strong> A scoreboard at the bottom of the page displays player boxes with inputs for names, total scores, and buttons to adjust scores based on the points of the current question.</li>
-      </ul>
-    </section>
-    <section id="tutorial">
-      <h2>Tutorial</h2>
-      <h5>How to Create a Board</h5>
-      <ol>
-        <li>Go to the <strong>Create</strong> page (create.html).</li>
-        <li>Enter the board name and update the category (in the header row) and the point value (in the first cell of the data row).</li>
-        <li>Use the <strong>Add row</strong> and <strong>Add col</strong> buttons to add rows and columns (within the specified limits).</li>
-        <li>Click on <strong>Enter Question</strong> in a cell to open the modal, enter the question and answer, and save the data.</li>
-        <li>Finally, click <strong>Save table</strong> to download the board as a JSON file.</li>
-      </ol>
-      <h5>How to Play</h5>
-      <ol>
-        <li>Go to the <strong>Play</strong> page (play.html).</li>
-        <li>Enter the number of players and import the previously saved JSON board file.</li>
-        <li>The board will be displayed along with the scoreboard. Each board cell initially shows "try this" and changes to "show again" once clicked.</li>
-        <li>Click on a cell to open a full-screen overlay displaying the question.</li>
-        <li>Click <strong>Show Answer</strong> to reveal the answer and <strong>Fact Check</strong> to send the question to ChatGPT for a brief fact-check.</li>
-        <li>Use the "+" and "-" buttons in the scoreboard to update the players' scores based on the current question's points.</li>
-        <li>After you have used the initial settings (number of players and JSON file), those elements will disappear to make room for the game.</li>
-      </ol>
-    </section>
-  </div>
+    </header>
+    <div id="div-bg">
+        <div class="jumbotron shadow pulse animated site-section" id="jumbocome">
+            <h1 id="heading-welcome">Welcome to Leopardy !</h1>
+            <p style="margin-bottom: 38px;">Get your game board ready, challenge your friends, and prove who’s the real champion… <br>Share your screen, answer the questions, and find out if you truly have the brain of a quiz master.<br>You can also discover who is the most retarded in your party.&nbsp;</p><a class="btn btn-primary" role="button" id="button-more-info" href="../pages/help.html"><strong>More info</strong><br></a>
+        </div>
+        <div class="container site-section" data-aos="slide-up" data-aos-offset="500" data-aos-delay="50" id="howitworks">
+            <h1>How it works ?</h1>
+            <p>Create a custom game board in <em>Create</em>, save it as a JSON file, and use it in <em>Play</em>&nbsp;to challenge your friends.<br>Answers are revealed only on request.&nbsp;Keep track of the scoreboard for some extra competition!<br></p>
+        </div>
+    </div>
+    <div class="dark-section">
+        <div class="container site-section" id="whyitworks">
+            <h1 data-aos="zoom-in-down" data-aos-offset="200">Why it works ?</h1>
+            <div class="row">
+                <div class="col-md-4 item" data-aos="fade-up" data-aos-offset="300"><i class="fa fa-wheelchair-alt" style="color: var(--leo-steel-pink);"></i>
+                    <h2 style="color: var(--leo-steel-pink);">Disability ready</h2>
+                    <p>Even your handless friend can play Leopardy, thanks to the insane technology behind this game. Even if you don't have an eye you will still be able to play this game; if you don't have both, damn.<br></p>
+                </div>
+                <div class="col-md-4 item" data-aos="fade-up" data-aos-offset="300"><i class="fa fa-money" style="color: var(--leo-sapphire);"></i>
+                    <h2 style="color: var(--leo-sapphire);">Free to play</h2>
+                    <p>Leopardy is completely free to play! Create, customize, and enjoy your game without any costs or subscriptions. Just set up your board and have fun. Or if you want pay me with some V-bucks<br></p>
+                </div>
+                <div class="col-md-4 item" data-aos="fade-up" data-aos-offset="300"><i class="fa fa-gamepad" style="color: var(--leo-medium-slate-blue);"></i>
+                    <h2 style="color: var(--leo-medium-slate-blue);">Party popper<br></h2>
+                    <p>Leopardy is the perfect party game! Play with friends, share your screen, and enjoy a fun and interactive quiz experience together. Great for game nights and group challenges.<br></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <footer id="footer" class="fixed-bottom">
         <div id="footer-div">
             <p id="footer-p">This project is licensed under the MIT License. No copyright or restrictions.<br></p>

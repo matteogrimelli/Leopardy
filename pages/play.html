@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Leopardy</title>
+    <title>Play Leopardy</title>
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png?h=be3f14c69b811cb11fbec5483373d655">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png?h=c66558527b198b2c26c92dbb69692288">
     <link rel="icon" type="image/png" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png?h=03ffb3c2af5af0010c0f960449a24c72">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../assets/css/style.css?h=cfb86bcfe4d0747b573c0c4fe9f00409">
 </head>
 
-<body class="help-page">
+<body>
     <header id="header-nav">
         <nav class="navbar navbar-light navbar-expand-md" id="navbar">
             <div class="container-fluid"><a class="navbar-brand" id="navbar-site" href="#">LEOPARDY</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -38,47 +38,31 @@
                 </div>
             </div>
         </nav>
-    </header><div class="container my-4">
-    <section id="site-info">
-      <h2>Site Information</h2>
-      <p>
-        Leopardy is a game inspired by the quiz show "Jeopardy!". The site allows you to create custom game boards,
-        save your questions, and play in multiplayer mode. Additionally, in future, you will be able to perform fact-checking on the questions
-        using embedded ChatGPT.
-      </p>
-    </section>
-    <section id="functionalities">
-      <h2>Functionalities</h2>
-      <ul>
-        <li><strong>Board Creation:</strong> Create a game board with a maximum of 8 rows and 6 columns (the first column is reserved for points and the others for questions in each category).</li>
-        <li><strong>Question Modal:</strong> Each board cell opens a single modal where you can enter the question and answer. If the modal is closed without saving, the inputs are cleared.</li>
-        <li><strong>Board Saving:</strong> The game board is saved as a JSON file, where questions and answers are encoded in Base64.</li>
-        <li><strong>Playing the Game:</strong> Import the JSON board, select the number of players, and play the game. When you click a board cell, a full-screen overlay displays the question. You can reveal the answer and even request a fact-check using ChatGPT.</li>
-        <li><strong>Scoreboard:</strong> A scoreboard at the bottom of the page displays player boxes with inputs for names, total scores, and buttons to adjust scores based on the points of the current question.</li>
-      </ul>
-    </section>
-    <section id="tutorial">
-      <h2>Tutorial</h2>
-      <h5>How to Create a Board</h5>
-      <ol>
-        <li>Go to the <strong>Create</strong> page (create.html).</li>
-        <li>Enter the board name and update the category (in the header row) and the point value (in the first cell of the data row).</li>
-        <li>Use the <strong>Add row</strong> and <strong>Add col</strong> buttons to add rows and columns (within the specified limits).</li>
-        <li>Click on <strong>Enter Question</strong> in a cell to open the modal, enter the question and answer, and save the data.</li>
-        <li>Finally, click <strong>Save table</strong> to download the board as a JSON file.</li>
-      </ol>
-      <h5>How to Play</h5>
-      <ol>
-        <li>Go to the <strong>Play</strong> page (play.html).</li>
-        <li>Enter the number of players and import the previously saved JSON board file.</li>
-        <li>The board will be displayed along with the scoreboard. Each board cell initially shows "try this" and changes to "show again" once clicked.</li>
-        <li>Click on a cell to open a full-screen overlay displaying the question.</li>
-        <li>Click <strong>Show Answer</strong> to reveal the answer and <strong>Fact Check</strong> to send the question to ChatGPT for a brief fact-check.</li>
-        <li>Use the "+" and "-" buttons in the scoreboard to update the players' scores based on the current question's points.</li>
-        <li>After you have used the initial settings (number of players and JSON file), those elements will disappear to make room for the game.</li>
-      </ol>
-    </section>
-  </div>
+    </header>
+    <div id="div-play">
+        <h1 id="h1-play-table">Play your table</h1>
+        <div class="container my-4" id="setup-section">
+            <h3 id="heading-setup">Setup</h3>
+            <div class="form-group"><label for="number of players">Number of players</label><input type="number" id="num-players" class="form-control" min="1" max="6"></div>
+            <div class="form-group" id="file-import"><label for="json-file">Select JSON board file</label><input type="file" id="json-file" class="form-control-file" accept=".json"></div><button class="btn btn-primary" id="load-board-btn" type="button">Load table and scoreboard</button>
+        </div>
+        <div class="container my-4" id="board-section">
+            <h3 id="board-title"></h3>
+            <div id="board-container" class="table-responsive"></div>
+        </div>
+        <div id="question-overlay" class="d-none">
+            <div class="overlay-content">
+                <div id="question-text"></div>
+                <hr id="hr-question" class="d-none">
+                <div id="answer-text" class="d-none"></div>
+                <div class="btn-group" role="group" id="btn-group-overlay"><button class="btn btn-success mt-3" id="show-answer-btn" type="button">Show answer</button><button class="btn btn-danger mt-3" id="close-overlay-btn" type="button">Close question</button></div>
+            </div>
+        </div>
+        <div class="container my-4 d-none" id="scoreboard-section">
+            <h3>Scoreboard</h3><button class="btn btn-success mt-2" id="add-player-btn" type="button">Add player</button>
+            <div id="scoreboard" class="d-flex flex-wrap"></div>
+        </div>
+    </div>
     <footer id="footer" class="fixed-bottom">
         <div id="footer-div">
             <p id="footer-p">This project is licensed under the MIT License. No copyright or restrictions.<br></p>
