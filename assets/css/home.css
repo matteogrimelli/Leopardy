@@ -63,13 +63,6 @@
   color: var(--leo-cold-black);
 }
 
-img {
-  max-width: 102px;
-  max-height: 100px;
-  z-index: 1000;
-  transform: scaleX(-1);
-}
-
 #footer-div {
   background-color: var(--leo-cold-black);
   text-align: center;

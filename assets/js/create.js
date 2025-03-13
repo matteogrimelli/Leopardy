@@ -10,9 +10,8 @@ $(document).ready(function() {
       ['insert', ['link', 'picture']],
       ['view', ['codeview']]
     ],
-    styleTags: ['p', 'h1', 'h3', 'h5']
+    styleTags: ['p', 'h1', 'h3', 'h5'],
   });
-  
   $('#summernote-answer').summernote({
     height: 300,
     placeholder: 'Enter an answer',
@@ -23,7 +22,7 @@ $(document).ready(function() {
       ['insert', ['link', 'picture']],
       ['view', ['codeview']]
     ],
-    styleTags: ['p', 'h1', 'h3', 'h5']
+    styleTags: ['p', 'h1', 'h3', 'h5'],
   });
 });
 
@@ -116,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		if (btn) {
 			btn.textContent = "Edit Question";
+            btn.style.backgroundColor = "var(--leo-emrald-green)";
 		} else {
 			console.error(`Button not found for cell: ${currentCellKey}`);
 		}
@@ -198,42 +198,52 @@ document.addEventListener("DOMContentLoaded", function() {
   // Salva il tabellone come file JSON
   function saveTable() {
     const boardName = document.getElementById("table-title").value || "Board";
-    // Legge le categorie dalla riga header (escludendo la prima cella)
+    const boardDescription = document.getElementById("table-description").value || "No description";
+    
+    // Legge le categorie dalla riga header
     const headerRow = tableContainer.querySelector(".row");
     const headerCells = headerRow.getElementsByClassName("col");
     let categories = [];
     for (let i = 1; i < headerCells.length; i++) {
-      const input = headerCells[i].querySelector("input");
-      categories.push(input ? input.value : "");
+        const input = headerCells[i].querySelector("input");
+        categories.push(input ? input.value : "");
     }
+
     // Legge le righe di dati (escludendo l'header)
     const dataRows = Array.from(tableContainer.getElementsByClassName("row")).slice(1);
     let rowsArray = [];
     dataRows.forEach((row, idx) => {
-      // L'indice reale della riga è idx+1 (dato che l'header è la riga 0)
-      const actualRowIndex = idx + 1;
-      const pointInput = row.querySelector(".col:first-child input");
-      const pointsValue = pointInput ? pointInput.value : "100";
-      let questions = [];
-      const cells = row.querySelectorAll(".col");
-      for (let i = 1; i < cells.length; i++) {
-        const key = `${actualRowIndex}-${i}`;
-        const cellEntry = cellData.get(key) || { question: "", answer: "" };
-        questions.push({
-          question: btoa(cellEntry.question),
-          answer: btoa(cellEntry.answer)
+        const actualRowIndex = idx + 1;
+        const pointInput = row.querySelector(".col:first-child input");
+        const pointsValue = pointInput ? pointInput.value : "100";  // Senza "Points"
+
+        let questions = [];
+        const cells = row.querySelectorAll(".col");
+        for (let i = 1; i < cells.length; i++) {
+            const key = `${actualRowIndex}-${i}`;
+            const cellEntry = cellData.get(key) || { question: "", answer: "" };
+            questions.push({
+                question: btoa(cellEntry.question),
+                answer: btoa(cellEntry.answer)
+            });
+        }
+
+        rowsArray.push({
+            points: pointsValue,  // Senza "Points"
+            questions: questions
         });
-      }
-      rowsArray.push({
-        points: `Points ${pointsValue}`,
-        questions: questions
-      });
     });
+
+    // Nuovo formato JSON con version e encryption
     const board = {
-      name: boardName,
-      categories: categories,
-      rows: rowsArray
+        version: "2.0",
+        encryption: "base64",
+        name: boardName,
+        description: boardDescription,  // Nuovo campo
+        categories: categories,
+        rows: rowsArray
     };
+
     const jsonStr = JSON.stringify(board, null, 2);
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -244,7 +254,8 @@ document.addEventListener("DOMContentLoaded", function() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }
+}
+
 
   // Assegna gli event listener ai pulsanti principali
   addRowBtn.addEventListener("click", addRow);
@@ -256,4 +267,24 @@ document.addEventListener("DOMContentLoaded", function() {
   if (initialQuestionBtn) {
     initialQuestionBtn.addEventListener("click", openModal);
   }
+});
+
+$('textarea').keyup(function() {
+    
+  var characterCount = $(this).val().length,
+      current = $('#current'),
+      maximum = $('#maximum'),
+      theCount = $('#the-count');
+    
+  current.text(characterCount);
+  if (characterCount > 100 && characterCount <200) {
+    current.css('color', 'yellow');
+  }
+  else if (characterCount >= 200) {
+    current.css('color', 'red');
+  } 
+  else {
+    current.css('color','#ffffff');
+  }
+  
 });

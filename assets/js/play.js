@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("question-overlay").classList.remove("d-none");
     // Se la cella è già stata aperta, cambia il testo in "show again"
     cell.textContent = "show again";
+    cell.style.backgroundColor = "var(--leo-emrald-green)";
   }
 
   // Gestione dei pulsanti nell'overlay

@@ -11,7 +11,8 @@
   --leo-bright-white: #b69fb7;
 }
 
-#header-nav {
+#navcol-1 .nav-link.active {
+  color: var(--leo-medium-slate-blue);
 }
 
 .site-section h1 {
