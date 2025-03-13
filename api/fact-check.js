@@ -14,8 +14,8 @@ export default async function handler(req, res) {
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: `Respond in the same language as the question. Fact-check this statement: "${question}"` }],
+            model: "gpt-4o-mini",
+            messages: [{ role: "user", content: `Answer this question in the same language it was asked in: "${question}"` }],
             max_tokens: 50
         });
 
