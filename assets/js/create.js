@@ -256,28 +256,17 @@ document.addEventListener("DOMContentLoaded", function() {
     URL.revokeObjectURL(url);
 }
 
-
   // Assegna gli event listener ai pulsanti principali
-  //addRowBtn.addEventListener("click", addRow);
-  //addColBtn.addEventListener("click", addCol);
-  //saveTableBtn.addEventListener("click", saveTable);
-  document.addEventListener("DOMContentLoaded", function() {
-    const someElement = document.getElementById("your-element-id"); // Replace with actual element ID
-    if (someElement) {
-        someElement.addEventListener("click", function() {
-            console.log("Element clicked!");
-        });
-    } else {
-        console.warn("Element with ID 'your-element-id' not found.");
-    }
-});
+  addRowBtn.addEventListener("click", addRow);
+  addColBtn.addEventListener("click", addCol);
+  saveTableBtn.addEventListener("click", saveTable);
 
   // Per il pulsante "Enter Question" iniziale già presente, aggiunge l'evento
   const initialQuestionBtn = document.querySelector(".btn-question");
   if (initialQuestionBtn) {
     initialQuestionBtn.addEventListener("click", openModal);
   }
-});
+  });
 
 $('textarea').keyup(function() {
     
