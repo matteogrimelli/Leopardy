@@ -178,29 +178,34 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.getElementById("fact-check-btn").addEventListener("click", async function() {
-    const questionText = document.getElementById("question-text").textContent;
+  const questionText = document.getElementById("question-text").textContent;
 
-    if (!questionText) {
-        alert("No question available for fact-checking.");
-        return;
-    }
+  if (!questionText) {
+      alert("No question available for fact-checking.");
+      return;
+  }
 
-    const resultBox = document.getElementById("fact-check-result");
-    resultBox.value = "Checking facts...";
-    resultBox.classList.remove("d-none");
+  const resultBox = document.getElementById("fact-check-result");
+  resultBox.value = "Checking facts...";
+  resultBox.classList.remove("d-none");
 
-    try {
-        const response = await fetch("/api/fact-check", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: questionText })
-        });
+  try {
+      const response = await fetch("/api/fact-check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: questionText })
+      });
 
-        const data = await response.json();
-        resultBox.value = data.factCheck || "No fact-check result available.";
+      if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+      }
 
-    } catch (error) {
-        console.error("Fact-checking error:", error);
-        resultBox.value = "Error fetching fact-checking data.";
-    }
+      const data = await response.json();
+      resultBox.value = data.factCheck || "No fact-check result available.";
+
+  } catch (error) {
+      console.error("Fact-checking error:", error);
+      resultBox.value = "Error fetching fact-checking data.";
+  }
 });
+
