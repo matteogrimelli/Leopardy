@@ -1,0 +1,91 @@
+{
+    "name": "Tabellone Leopardy",
+    "categories": ["Geografia", "Sport", "Videogiochi", "Film"],
+    "rows": [
+      {
+        "points": "Punti 100",
+        "questions": [
+          {
+            "question": "UXVhbCDDpGxhIGNhcGl0YWxlIGQnSXRhbGlhPw==",
+            "answer": "Um9tYQ=="
+          },
+          {
+            "question": "UXVhbnRpIGdpb2NhdG9yZSBjaSBzYSBjaW8gaW4gdW5hIHNxdWFkcmEgZCBjYWxjby8=",
+            "answer": "MTE="
+          },
+          {
+            "question": "UXVhbCDDpGxlIGF6aWVuZGEgaGEgc3ZlbGxvcHBhdG8gJ1N1cGVyIE1hcmlvIEJyb3MnPw==",
+            "answer": "TmludGVuZG8="
+          },
+          {
+            "question": "Q2hpIGhhIGludGVycHJldGF0byBpbCBydWxpbyBkZSBBamNrIERhdXNvbiBpbiAnVGl0YW5pYy8=",
+            "answer": "TGVvbmFyZG8gRGlDYXByaW8="
+          }
+        ]
+      },
+      {
+        "points": "Punti 200",
+        "questions": [
+          {
+            "question": "UXVhbCDDpGxhIGZpZHVtZSBIw6RwbHVzbHVuZ3RvZCdFdXJvcGE/",
+            "answer": "Vm9sZ2E="
+          },
+          {
+            "question": "SW4gY2hlIHNwb3J0IHNpIHVzYSB1bmEgcmFjY2hldHRhPw==",
+            "answer": "VGVubmlz"
+          },
+          {
+            "question": "UXVhbCDDpGxlIGlsIHZpZGVvZ2lhY28gZGkgcm9sb8OpIHBsdSBmYXN1b3M/",
+            "answer": "RmluYWwgRmFudGFzeQ=="
+          },
+          {
+            "question": "UXVhbCDDpGxlIGlsIGZpbG0gw6JpIGZpc3RvIGFsIGNpbmVtYT8=",
+            "answer": "QXZhdGFy"
+          }
+        ]
+      },
+      {
+        "points": "Punti 300",
+        "questions": [
+          {
+            "question": "UXVhbCDDpGxhIGxhIG1vbnRhbmdhIMOpIGFsdGEgZGVsIG1vbmRvPw==",
+            "answer": "RXZlcmVzdA=="
+          },
+          {
+            "question": "SW4gcXVhbGUgc3BvcnQgc2kgaWZmZWN0dWFtZW50byB1biAnc2xhbSBkdW5rJz8=",
+            "answer": "QmFza2V0YmFsbA=="
+          },
+          {
+            "question": "UXVhbCDDpGxlIGNvbnNvbGUgaGEgcml2b2x1emlhdMOtIGlsIG1vbmRvIGRpIHZpZGVvZ2lhY28gZGVsbCBhbm5pICc5MCc/",
+            "answer": "UGxheVN0YXRpb24="
+          },
+          {
+            "question": "Q2hpIGhhIGRpcmV0dG8gaWwgcGFkcmlubyA/",
+            "answer": "RnJhbmNpcyBGb3JkIENvcHBvbGE="
+          }
+        ]
+      },
+      {
+        "points": "Punti 400",
+        "questions": [
+          {
+            "question": "UXVhbCDDpGxhIGlsIGRlcyBhbWVudG8gcMOibiBncmFudGUgZGVsIG1vbmRvPw==",
+            "answer": "U2FoYXJh"
+          },
+          {
+            "question": "SW4gY2hlIHNwb3J0IHNpIHVzYSBsZSBtYXp6ZSBkYSBiYXNlYmFsbD8=",
+            "answer": "QmFzZWJhbGw="
+          },
+          {
+            "question": "UXVhbCDDpGxlIHZpZGVvZ2lhY28gaGEgY29tZSBwcm9kdXN0YSAnTWFzdGVyIENoZWlmJz8=",
+            "answer": "SGFsbw=="
+          },
+          {
+            "question": "UXVhbCDDpGxlIGlsIGZpbG0gZCdhbmltYXRpb25lIMOpIHByYW1pYWRvIGRlbGxhIERpc25leT8=",
+            "answer": "SWwgUmUgTGVvbmU="
+          }
+        ]
+      }
+    ]
+  }
+  
