@@ -1,14 +1,24 @@
 {
-    "name": "leopardy",
-    "version": "1.0.0",
-    "description": "Leopardy API for fact-checking",
-    "main": "api/fact-check.js",
-    "dependencies": {
-      "openai": "^4.0.0",
-      "express": "^4.18.2"
-    },
-    "scripts": {
-      "start": "node api/fact-check.js"
-    }
+  "name": "leopardy",
+  "version": "1.0.0",
+  "description": "Leopardy is a web-based quiz game inspired by *Jeopardy!*, allowing users to create, save, and play custom game boards.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matteogrimelli/Leopardy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matteogrimelli/Leopardy/issues"
+  },
+  "homepage": "https://github.com/matteogrimelli/Leopardy#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "openai": "^4.87.3"
   }
-  
+}
