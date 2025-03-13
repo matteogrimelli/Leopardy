@@ -1,6 +1,14 @@
 {
     "routes": [
       { "src": "/", "dest": "root/home.html" }
-    ]
-  }
+    ],
+    "functions": {
+      "api/*.js": {
+        "runtime": "nodejs18.x"
+      }
+    },
+  "builds": [
+    { "src": "api/fact-check.js", "use": "@vercel/node" }
+  ]
+}
   
