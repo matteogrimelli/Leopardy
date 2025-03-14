@@ -15,8 +15,8 @@ export default async function handler(req, res) {
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{ role: "user", content: `Answer this question in the same language it was asked in: "${question}"` }],
-            max_tokens: 50
+            messages: [{ role: "user", content: `Answer this question: "${question}"` }],
+            max_tokens: 100
         });
 
         return res.status(200).json({ factCheck: response.choices[0].message.content });
