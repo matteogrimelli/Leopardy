@@ -5,23 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Leopardy</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png?h=be3f14c69b811cb11fbec5483373d655">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png?h=c66558527b198b2c26c92dbb69692288">
-    <link rel="icon" type="image/png" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png?h=03ffb3c2af5af0010c0f960449a24c72">
-    <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon/android-chrome-192x192.png?h=d3413930b7024e5bbf9eeade926b9cd4">
-    <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon/android-chrome-512x512.png?h=8065806564472bfbd08d4868cf9c8ba4">
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css?h=97a800e1bbeb0eab79b102b312cc7cda">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon/android-chrome-512x512.png">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
-    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css?h=320bd0471c3e8d6b9dd55c98e185506c">
-    <link rel="stylesheet" href="../assets/css/create.css?h=9432ff50d403c0c40a52a7a6e958dd48">
-    <link rel="stylesheet" href="../assets/css/help.css?h=99b3a6e28e850126fbbcbdda995ed589">
-    <link rel="stylesheet" href="../assets/css/home.css?h=3023758bef84a1ca83934e892be3ad3f">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/create.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote/dist/summernote-lite.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="../assets/css/play.css?h=ddde39e608a992019aca1dde1494081e">
-    <link rel="stylesheet" href="../assets/css/style.css?h=983a6eebf11a764a9cdcd9fefb01c08c">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body id="body-create">
@@ -51,9 +48,7 @@
             </div>
             <div class="row">
                 <div class="col"><input type="number" id="P1" class="input-point" value="100" inputmode="numeric" title="Insert point value for this row of questions"></div>
-                <div class="col">
-                    <!-- Start: Modal Button --><a class="btn btn-warning btn-question" role="button" id="C1-P1" data-toggle="modal" href="#modal-update-question" data-row-index="1" data-col-index="1">Enter question</a><!-- End: Modal Button -->
-                </div>
+                <div class="col"><a class="btn btn-warning btn-question" role="button" id="C1-P1" data-toggle="modal" href="#modal-update-question" data-row-index="1" data-col-index="1">Enter question</a></div>
             </div>
         </div>
         <div class="btn-group" role="group" id="div-alter-table"><button class="btn btn-primary" id="add-row-btn" type="button">Add row</button><button class="btn btn-primary" id="add-col-btn" type="button">Add col</button><button class="btn btn-success" id="save-table-btn" type="button">Save table</button></div>
@@ -65,7 +60,6 @@
                     <h2 class="modal-title" id="modal-title">Setup Enter category for 100 points</h2>
                 </header>
                 <div class="modal-body">
-                    <!-- Start: 1 Row 2 Columns -->
                     <div class="container">
                         <div class="row">
                             <div class="col-auto col-md-6">
@@ -75,7 +69,7 @@
                                 <h5>Enter the answer</h5><textarea id="summernote-answer" class="summernote" name="answer"></textarea>
                             </div>
                         </div>
-                    </div><!-- End: 1 Row 2 Columns -->
+                    </div>
                 </div>
                 <div class="modal-footer"><button class="btn btn-danger" id="close-modal" type="button" data-dismiss="modal">Close</button><button class="btn btn-success" id="save-modal" type="button" onclick="save()">Save</button></div>
             </div>
@@ -86,16 +80,14 @@
             <p id="footer-p">This project is licensed under the MIT License. No copyright or restrictions.<br></p>
         </div>
     </footer>
-    <script src="../assets/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
-    <script src="../assets/js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="../assets/js/home.js?h=666771171da2d86351dbd35756f92861"></script>
-    <script src="../assets/js/create.js?h=1f496b21eb4ad540e71d49f7bde59322"></script>
+    <script src="../assets/js/create.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote/dist/summernote-lite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-    <script src="../assets/js/play.js?h=c8f4d150b4484ddee45b27e8641f8b8b"></script>
-    <script src="../assets/js/script.js?h=d41d8cd98f00b204e9800998ecf8427e"></script>
+    <script src="../assets/js/script.js"></script>
 </body>
 
 </html>

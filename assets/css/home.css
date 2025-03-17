@@ -63,21 +63,8 @@
   color: var(--leo-cold-black);
 }
 
-#footer-div {
-  background-color: var(--leo-cold-black);
-  text-align: center;
-  margin: 0;
-  padding: 10px;
-}
-
-#footer-p {
-  color: var(--leo-bright-white);
-  font-family: 'Raleway';
-  margin: auto;
-}
-
 #div-bg {
-  background: url(../../assets/img/background.jpg?h=506088b3ca31fa776f0f925d3d0d8fe9);
+  background: url(../../assets/img/background.jpg);
   background-size: cover;
   background-position: center;
   position: relative;
@@ -90,13 +77,5 @@
 #button-more-info {
   background-color: var(--leo-sapphire);
   color: var(--leo-cold-black);
-}
-
-.nav-link.active {
-  color: var(--leo-steel-pink);
-}
-
-#h1-play-table {
-  color: var(--leo-indian-red);
 }
 

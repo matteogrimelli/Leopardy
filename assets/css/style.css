@@ -33,9 +33,6 @@ body {
   background-color: var(--leo-raisin-black);
 }
 
-.container.my-4 {
-}
-
 #navcol-1 .nav-link {
   margin-right: 4px;
   margin-left: 4px;
@@ -74,5 +71,38 @@ body {
 .btn.btn-warning {
   color: var(--leo-cold-black);
   background-color: var(--leo-indian-red);
+}
+
+#footer-div {
+  background-color: var(--leo-cold-black);
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+}
+
+#footer-p {
+  color: var(--leo-bright-white);
+  font-family: 'Raleway';
+  margin: auto;
+}
+
+.nav-link.active {
+  color: var(--leo-steel-pink);
+}
+
+#div404 {
+  color: white;
+  margin: auto;
+  text-align: center;
+  margin-top: 20%;
+}
+
+#body404 {
+  background: rgb(0,0,0);
+  background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(30,23,27,1) 200%);
+}
+
+#div404 p {
+  padding: 20px;
 }
 
