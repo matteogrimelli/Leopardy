@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Not Found</title>
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            background-color: var(--leo-raisin-black);
+            color: var(--leo-bright-white);
+            text-align: center;
+            font-family: 'Bitter', serif;
+        }
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 100px;
+            color: var(--leo-steel-pink);
+            text-shadow: 3px 3px var(--leo-cold-black);
+        }
+        .btn-primary {
+            background-color: var(--leo-sapphire);
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: var(--leo-medium-slate-blue);
+        }
+        .glitch {
+            animation: glitch 1s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="glitch">404</h1>
+        <p class="animate__animated animate__fadeInUp">Oops! You got lost in the quiz dimension.</p>
+        <a href="home.html" class="btn btn-primary animate__animated animate__pulse animate__infinite">Return Home</a>
+    </div>
+</body>
+</html>
